@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+</head>
+<body>
+	<form action="signin.jsp" method="post">
+		<table border="1">
+			<tr>
+				<td colspan="2">회원가입</td>
+			</tr>
+			<tr>
+				<td>아이디</td>
+				<td><input type="text" name="id" id="id"></td>
+			</tr>
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="password" name="pwd" id="pwd"></td>
+			</tr>
+			<tr>
+				<td>이름</td>
+				<td><input type="text" name="name" id="name"></td>
+			</tr>
+			<tr>
+				<td>취미</td>
+				<td>잠자기<input type="checkbox" value="잠자기" name="hobby">
+					영화감상<input type="checkbox" value="영화" name="hobby">
+					독서<input type="checkbox" value="독서" name="hobby">
+					게임<input type="checkbox" value="게임" name="hobby">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="button" value="회원가입"
+					onclick="signin()"></td>
+			</tr>
+		</table>
+	</form>
+	<script>
+		function signin() {
+			var idObj = document.getElementById("id");
+			var pwdObj = document.getElementById("pwd");
+			var nameObj = document.getElementById("name");
+
+			if (idObj.value == "") {
+				alert("아이디를 입력해");
+				idObj.focus();
+				return;
+			}
+			if (pwdObj.value == "") {
+				alert("비밀번호를 입력해");
+				pwdObj.focus();
+				return;
+			}
+			if (nameObj.value == "") {
+				alert("이름을 입력해");
+				nameObj.focus();
+				return;
+			}
+			location.href="signin.jsp?id=" + idObj.value + "&pwd=" + pwdObj.value + "&name="+ nameObj.value;
+		}
+	</script>
+</body>
+</html>

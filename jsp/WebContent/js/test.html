@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script>
+var a = 2;
+/*
+function test(){
+	var idObj = document.getElementById("id");
+	var pwdObj = document.getElementById("pwd");
+	var ageObj = document.getElementById("age");
+	var nameObj = document.getElementById("name");
+	alert(idObj.value);
+	alert(pwdObj.value);
+	alert(ageObj.value);
+	alert(nameObj.value);	
+}
+*/
+
+function test(btnObj) {
+	alert(btnObj.value);
+}
+
+var TestObj = function() {
+	this.a = 3;
+	this.b = 4;
+	var c = 10;
+	this.alertStr = function(str) {
+		alert(c);
+	}
+}
+
+var to = new TestObj();
+to.alertStr();
+</script>
+<body>
+아이디 : <input type="text" name="id" id="id"><br/>
+비밀번호 : <input type="password" name="pwd" id="pwd"><br/>
+나이 : <input type="text" name="age" id="age"><br/>
+이름 : <input type="text" name="name" id="name"><br/>
+<input type="button" value="테스트" onclick="test(this)"><br/>
+</body>
+</html>
