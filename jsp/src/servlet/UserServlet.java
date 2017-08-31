@@ -109,11 +109,19 @@ public class UserServlet extends HttpServlet{
 		int rCnt = us.updatetUser(hm);
 		String result = "회원 정보 수정에 실패하셨습니다";
 		if(rCnt==1) {
+			Map<String, String> user = (Map<String, String>)session.getAttribute("user");
+			if(user.get("admin").equals("1")) {
+				result = "<script>";
+				result += "alert('회원 정보 수정에 성공하셨습니다.');";
+				result += "location.href='/list.jsp';";
+				result += "</script>";
+			} else {
 			session.invalidate();
 			result = "<script>";
 			result += "alert('회원 정보 수정에 성공하셨습니다. 다시 로그인해주시기 바랍니다.');";
 			result += "location.href='/login.jsp';";
 			result += "</script>";
+			}
 		}
 		doProcess(response, result);
 		} else if(command.equals("delete")) {
@@ -123,10 +131,19 @@ public class UserServlet extends HttpServlet{
 			int rCnt = us.deleteUser(hm);
 			String result = "회원 탈퇴에 실패하셨습니다";
 			if(rCnt==1) {
-				result = "<script>";
-				result += "alert('회원탈퇴에 성공하셨습니다..');";
-				result += "location.href='/login.jsp';";
-				result += "</script>";
+				HttpSession session = request.getSession();
+				Map<String, String> user = (Map<String, String>)session.getAttribute("user");
+				if(user.get("admin").equals("1")) {
+					result = "<script>";
+					result += "alert('회원탈퇴에 성공하셨습니다.');";
+					result += "location.href='/list.jsp';";
+					result += "</script>";
+				} else {
+					result = "<script>";
+					result += "alert('회원탈퇴에 성공하셨습니다..');";
+					result += "location.href='/login.jsp';";
+					result += "</script>";
+				}
 			}
 			doProcess(response, result);
 		} else if(command.equals("list")) {

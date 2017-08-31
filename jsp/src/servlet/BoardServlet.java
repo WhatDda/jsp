@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,8 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
+import service.BoardService;
+import service.BoardServiceImpl;
+import service.UserService;
+import service.UserServiceImpl;
+
 public class BoardServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
+	private BoardService bs = new BoardServiceImpl();
+	private Gson g = new Gson();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
@@ -45,16 +56,11 @@ public class BoardServlet extends HttpServlet{
 		
 		request.setCharacterEncoding("utf-8");
 		String command = request.getParameter("command");
-		System.out.println(command);
-		if(command.equals("write")) {
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-			String writer = request.getParameter("writer");
-			HashMap hm = new HashMap();
-			hm.put("title", title);
-			hm.put("content", content);
-			hm.put("writer", writer);
-			String result = "저장이 완료 되었습니다.";
+		if(command.equals("list")) {
+			List<Map<String, String>> boardList = bs.selectBoardList();
+			Map<String, Object> rHm = new HashMap<String, Object>();
+			rHm.put("list", boardList);
+			String result = g.toJson(rHm);
 			doProcess(response, result);
 		}
 	}
