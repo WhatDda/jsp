@@ -7,11 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%
 String rootPath = request.getContextPath();
-
+Map<String, String> user = null;
 if(session.getAttribute("user")==null){
 	RequestDispatcher dis = request.getRequestDispatcher("/login.jsp");
 	dis.forward(request, response);
 	//forward 사용시 로그인 안된 상태에서 url에 modify.jsp 접속하면 url은 modify.jsp 이지만 화면은 login.jsp
+} else {
+	user = (Map<String, String>)session.getAttribute("user");
 }
 %>
 <script src="<%=rootPath%>/js/jquery-3.2.1.min.js"></script>

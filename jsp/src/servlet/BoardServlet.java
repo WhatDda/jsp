@@ -62,6 +62,13 @@ public class BoardServlet extends HttpServlet{
 			rHm.put("list", boardList);
 			String result = g.toJson(rHm);
 			doProcess(response, result);
+		} else if(command.equals("write")) {
+			String param = request.getParameter("param");
+			Map<String, String> hm = g.fromJson(param, HashMap.class);
+			HttpSession session = request.getSession();
+			Map<String, String> user = (Map<String, String>)session.getAttribute("user");
+			hm.put("writer", user.get("user_no"));
+			int row = bs.insertBoard(hm);
 		}
 	}
 	
