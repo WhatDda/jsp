@@ -26,10 +26,30 @@ $(document).ready(function(){
 		param["content"]= $("#content").val();
 		param["writer"]= $("#writer").val();
 		param["b_num"] = "<%=request.getParameter("b_num")%>";
-		param = "?command=modify&param=" + JSON.stringify(param);
-		param = encodeURI(param);
-		var au = new AjaxUtil(param,"write.board");
-		au.send();
+		param["command"] = "modify";
+		param = JSON.stringify(param);
+		$.ajax({ 
+	        type     : "POST"
+	    	    ,   url      : "/write.board"
+	    	    ,   dataType : "json" 
+	    	    ,   beforeSend: function(xhr) {
+	    	        xhr.setRequestHeader("Accept", "application/json");
+	    	        xhr.setRequestHeader("Content-Type", "application/json");
+	    	    }
+	    	    ,   data     : param
+	    	    ,   success : function(result){
+	    	    	alert(result.msg);
+	    	    	location.href="/board/board_list.jsp";
+	    	    }
+	    	    ,   error : function(xhr, status, e) {
+	    		    	alert("에러 : "+e);
+	    		},
+	    		complete : function(e) {
+	    		}
+		    });
+		//		param = encodeURI(param);
+		//		var au = new AjaxUtil(param,"write.board");
+		//		au.send();
 	
 	})
 })

@@ -76,7 +76,33 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int deleteBoard(Map<String, String> hm) {
-		// TODO Auto-generated method stub
+		String sql = "delete from board where b_num=?";
+		Connection con = null;
+		DBcon db = null;
+		try {
+			db = new DBcon();
+			con = db.getCon();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, hm.get("b_num"));
+			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			} else {
+				con.rollback();
+			}
+			return rCnt;
+	} catch(Exception e) {
+		try {
+			con.rollback();
+		} catch(Exception e1) {
+		e.printStackTrace();
+		}
+		e.printStackTrace();
+	} finally {
+		if(db!=null) {
+			db.closeCon();
+		}	
+	}
 		return 0;
 	}
 

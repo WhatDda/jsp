@@ -1,8 +1,10 @@
 package servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +58,17 @@ public class BoardServlet extends HttpServlet{
 		
 		request.setCharacterEncoding("utf-8");
 		String command = request.getParameter("command");
+		String inputStr = "";
+		Map<String, String> rqHm = null;
+		if(command==null) {
+			BufferedReader br = request.getReader();
+			String s = null;
+			while((s=br.readLine())!=null) {
+				inputStr +=s;
+			}
+			rqHm = g.fromJson(inputStr, HashMap.class);
+			command = rqHm.get("command"); 
+		}
 		if(command.equals("list")) {
 			List<Map<String, String>> boardList = bs.selectBoardList();
 			Map<String, Object> rHm = new HashMap<String, Object>();
@@ -88,15 +101,32 @@ public class BoardServlet extends HttpServlet{
 			doProcess(response, result);
 		} else if (command.equals("modify")) {
 			String param = request.getParameter("param");
-			Map<String, String> hm = g.fromJson(param, HashMap.class);
-
-			int rCnt = bs.modifyBoard(hm);
+			if(rqHm==null) {
+				rqHm = g.fromJson(param, HashMap.class);
+			}
+			int rCnt = bs.modifyBoard(rqHm);
 			Map<String, String> rHm = new HashMap<String, String>();
 			rHm.put("msg", "수정에 실패했습니다.");
 			rHm.put("url", "");
 			
 			if(rCnt==1) {
 				rHm.put("msg", "저장에 성공했습니다.");
+				rHm.put("url", "/board/board_list.jsp");
+			}
+			String result = g.toJson(rHm);
+			doProcess(response, result);
+		} else if (command.equals("delete")) {
+			String param = request.getParameter("param");
+			if(rqHm==null) {
+				rqHm = g.fromJson(param, HashMap.class);
+			}
+			int rCnt = bs.deleteBoard(rqHm);
+			Map<String, String> rHm = new HashMap<String, String>();
+			rHm.put("msg", "게시물 삭제에 실패했습니다.");
+			rHm.put("url", "");
+			
+			if(rCnt==1) {
+				rHm.put("msg", "게시물 삭제에 성공했습니다.");
 				rHm.put("url", "/board/board_list.jsp");
 			}
 			String result = g.toJson(rHm);
