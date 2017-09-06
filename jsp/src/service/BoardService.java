@@ -8,12 +8,12 @@ public interface BoardService {
 
 	List<Map<String, String>> selectBoardList();
 	
-	Map<String, String> selectBoard();
+	Map<String, String> selectBoard(Map<String, String> hm);
 	
 	int insertBoard(Map<String, String> hm);
 	
 	int deleteBoard(Map<String, String> hm);
 	
-	int updateBoard(Map<String, String> hm);
+	int modifyBoard(Map<String, String> hm);
 	
 }

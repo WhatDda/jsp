@@ -44,10 +44,11 @@ public class UserServiceImpl implements UserService {
 	public int insertUser(Map<String, String> hm) {
 		String sql = "insert into user(id,pwd,name,hobby,admin)";
 		sql += "values(?,?,?,?,?)";
-		Connection con;
+		Connection con = null;
+		DBcon db = null;
 		String result = "회원 가입 실패";
 		try {
-			DBcon db = new DBcon();
+			db = new DBcon();
 			con = db.getCon();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, hm.get("id"));
@@ -56,9 +57,23 @@ public class UserServiceImpl implements UserService {
 			ps.setString(4, hm.get("hobby"));
 			ps.setString(5, hm.get("admin"));
 			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			}  else {
+				con.rollback();
+			}
 			return rCnt;
 	} catch(Exception e) {
+		try {
+			con.rollback();
+		} catch(Exception e1) {
 		e.printStackTrace();
+		}
+		e.printStackTrace();
+	} finally {
+		if(db!=null) {
+			db.closeCon();
+		}	
 	}
 		return 0;
 	}
@@ -66,9 +81,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updatetUser(Map<String, String> hm) {
 		String sql = "update user SET id=?,pwd=?,name=?,hobby=? where user_no=?";
-		Connection con;
+		Connection con = null;
+		DBcon db = null;
 		try {
-			DBcon db = new DBcon();
+			db = new DBcon();
 			con = db.getCon();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, hm.get("id"));
@@ -77,9 +93,23 @@ public class UserServiceImpl implements UserService {
 			ps.setString(4, hm.get("hobby"));
 			ps.setString(5, hm.get("user_no"));
 			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			} else {
+				con.rollback();
+			}
 			return rCnt;
 	} catch(Exception e) {
+		try {
+			con.rollback();
+		} catch(Exception e1) {
 		e.printStackTrace();
+		}
+		e.printStackTrace();
+	} finally {
+		if(db!=null) {
+			db.closeCon();
+		}	
 	}
 		return 0;
 	}
@@ -87,16 +117,31 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int deleteUser(Map<String, String> hm) {
 		String sql = "delete from user where user_no=?";
-		Connection con;
+		Connection con = null;
+		DBcon db = null;
 		try {
-			DBcon db = new DBcon();
+			db = new DBcon();
 			con = db.getCon();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, hm.get("user_no"));
 			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			}else {
+				con.rollback();
+			}
 			return rCnt;
 	} catch(Exception e) {
+		try {
+			con.rollback();
+		} catch(Exception e1) {
 		e.printStackTrace();
+		}
+		e.printStackTrace();
+	} finally {
+		if(db!=null) {
+			db.closeCon();
+		}	
 	}
 		return 0;
 	}
