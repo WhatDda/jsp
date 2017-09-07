@@ -20,8 +20,10 @@ public class GoodsServiceImpl implements GoodsService {
 		try {
 			DBcon db = new DBcon();
 			con = db.getCon();
-			String sql = "select ginum, giname, gidesc, vinum,"
-					+ " gicredat, gimofdat, gicreusr, gimofusr from goods_info;";
+			String sql = "SELECT gi.ginum, gi.giname, gi.gidesc, gi.vinum, gi.gicredat,"
+					+ " gi.gimofdat, gi.gicreusr, u.name, gi.gimofusr, c.name as name2"
+					+ " FROM goods_info gi, user u, user c"
+					+ " where gi.gicreusr = u.user_no and gi.gimofusr = c.user_no;";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -34,6 +36,8 @@ public class GoodsServiceImpl implements GoodsService {
 				rGi.setGiMofDat(rs.getString("gimofdat"));
 				rGi.setGiCreusr(rs.getInt("gicreusr"));
 				rGi.setGiMofusr(rs.getInt("gimofusr"));
+				rGi.setName(rs.getString("name"));
+				rGi.setName2(rs.getString("name2"));
 				boardList.add(rGi);
 			}
 		} catch (Exception e) {

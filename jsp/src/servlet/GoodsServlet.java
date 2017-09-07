@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import dto.GoodsInfo;
 import service.GoodsService;
 import service.GoodsServiceImpl;
 
 public class GoodsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private GoodsService bs = new GoodsServiceImpl();
+	private GoodsService gs = new GoodsServiceImpl();
 	private Gson g = new Gson();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,11 +31,8 @@ public class GoodsServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String command = request.getParameter("command");
 		if (command.equals("list")) {
-			List<String> list = new ArrayList<String>();
-			list.add("test1");
-			list.add("test2");
-			list.add("test3");
-			request.setAttribute("test", list);
+			List<GoodsInfo> list = gs.selectGoodsList(null);
+			request.setAttribute("goodslist", list);
 			String url = "/goods/goods_list.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(url);
 			rd.forward(request, response);
