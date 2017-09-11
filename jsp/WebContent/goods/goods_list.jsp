@@ -15,6 +15,15 @@
 				<td><c:out value="${goods.giNum}" /></td>
 				<td><c:out value="${goods.giName}" /></td>
 				<td><c:out value="${goods.giDesc}" /></td>
+				<td><select>
+				<c:forEach items="${vendorlist}" var="vendor">
+					<c:set var="sel" value=""/>
+					<c:if test="${vendor.viNum eq goods.viNum}">
+						<c:set var="sel" value="selected"/>	
+					</c:if>	
+					<option value="${vendor.viNum}" ${sel}>${vendor.viName}</option>
+				</c:forEach>
+				</select></td>
 				<td><c:out value="${goods.viNum}" /></td>
 				<td><c:out value="${goods.giCreDat}" /></td>
 				<td><c:out value="${goods.giCreusr}" /></td>

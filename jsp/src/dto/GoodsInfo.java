@@ -12,7 +12,7 @@ public class GoodsInfo {
 	private String name;
 	private String name2;
 	
-	
+
 	public String getName() {
 		return name;
 	}

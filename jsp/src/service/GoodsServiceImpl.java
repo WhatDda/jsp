@@ -10,6 +10,7 @@ import java.util.Map;
 
 import common.DBcon;
 import dto.GoodsInfo;
+import dto.VendorInfo;
 
 public class GoodsServiceImpl implements GoodsService {
 
@@ -68,6 +69,31 @@ public class GoodsServiceImpl implements GoodsService {
 	public int updateGoods(GoodsInfo gi) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<VendorInfo> selectVendorList(VendorInfo vi) {
+		Connection con;
+		List<VendorInfo> boardList = new ArrayList<VendorInfo>();
+		try {
+			DBcon db = new DBcon();
+			con = db.getCon();
+			String sql = "select * from vendor_info;";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				VendorInfo rVi = new VendorInfo();
+
+				rVi.setViNum(rs.getInt("vinum"));
+				rVi.setViName(rs.getString("viname"));
+				rVi.setViDesc(rs.getString("videsc"));
+
+				boardList.add(rVi);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return boardList;
 	}
 
 }

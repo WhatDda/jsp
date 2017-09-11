@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dto.GoodsInfo;
+import dto.VendorInfo;
 import service.GoodsService;
 import service.GoodsServiceImpl;
 
@@ -31,11 +32,36 @@ public class GoodsServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String command = request.getParameter("command");
 		if (command.equals("list")) {
+			
 			List<GoodsInfo> list = gs.selectGoodsList(null);
-			request.setAttribute("goodslist", list);
+			List<VendorInfo> vlist = gs.selectVendorList(null);
+			String result = "<table border='1'>";
+			for(GoodsInfo gi : list) {
+				result += "<tr>";
+				result += "<td>" + gi.getGiNum() + "</td>";
+				result += "<td>" + gi.getGiName() + "</td>";
+				result += "<td>" + gi.getGiDesc() + "</td>";
+				result += "<td>" + gi.getViNum() + "</td>";
+				result += "<td><select>";
+				for(VendorInfo vi : vlist) {
+					String sel = "";
+					if(vi.getViNum()==gi.getViNum()) {
+						sel = "selected";
+					}
+					result += "<option " + sel + ">" + vi.getViName() + "</option>";
+				}
+				result += "</select></td>";
+				result += "<td>" + gi.getViNum() + "</td>";
+				result += "</td>";
+			}
+			result += "</table>";
+			doProcess(response,result);
+			 
+			/*request.setAttribute("goodslist", list);
+			request.setAttribute("vendorlist", vlist);
 			String url = "/goods/goods_list.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(url);
-			rd.forward(request, response);
+			rd.forward(request, response);*/
 		}
 	}
 
