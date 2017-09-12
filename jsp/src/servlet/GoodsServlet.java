@@ -3,7 +3,9 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,11 +33,24 @@ public class GoodsServlet extends HttpServlet {
 
 		request.setCharacterEncoding("utf-8");
 		String command = request.getParameter("command");
+		if(command==null) {
+			String param = request.getParameter("param");
+			Map<String, String> hm = g.fromJson(param, HashMap.class);
+			command = hm.get("command");
+		}
 		if (command.equals("list")) {
-			
-			List<GoodsInfo> list = gs.selectGoodsList(null);
+			String viNum = request.getParameter("vendor");
+			String giName = request.getParameter("giName");
+			GoodsInfo gi = new GoodsInfo();
+			if(viNum!=null) {
+				gi.setViNum(Integer.parseInt(viNum));
+			}
+			if(giName!=null) {
+				gi.setGiName(giName);
+			}
+			List<GoodsInfo> list = gs.selectGoodsList(gi);
 			List<VendorInfo> vlist = gs.selectVendorList(null);
-			String result = "<table border='1'>";
+			/*String result = "<table border='1'>"; 
 			for(GoodsInfo gi : list) {
 				result += "<tr>";
 				result += "<td>" + gi.getGiNum() + "</td>";
@@ -55,13 +70,17 @@ public class GoodsServlet extends HttpServlet {
 				result += "</td>";
 			}
 			result += "</table>";
-			doProcess(response,result);
+			doProcess(response,result);*/
 			 
-			/*request.setAttribute("goodslist", list);
+			request.setAttribute("goodslist", list);
 			request.setAttribute("vendorlist", vlist);
 			String url = "/goods/goods_list.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(url);
-			rd.forward(request, response);*/
+			rd.forward(request, response);
+		} else if(command.equals("vendorcombo")) {
+			List<VendorInfo> vlist = gs.selectVendorList(null);
+			String result = g.toJson(vlist);
+			doProcess(response,result);
 		}
 	}
 

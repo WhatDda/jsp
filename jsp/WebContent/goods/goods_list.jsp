@@ -10,6 +10,20 @@
 </head>
 <body>
 	<table border="1">
+		<tr>
+			<td colspan="11" align="centor">
+			<form action="test.goods" method="post">
+				<input type="hidden" name="command" value="list"/>
+				<select name="vendor">
+				<c:forEach items="${vendorlist}" var="vendor">
+					<option value="${vendor.viNum}">${vendor.viName}</option>
+				</c:forEach>
+				</select>
+				상품명 : <input type="text" id="giName" name="giName">
+				<input type="submit" id="btnSearch" value="상품검색">
+			</form>
+			</td>
+		</tr>
 		<c:forEach items="${goodslist}" var="goods">
 			<tr>
 				<td><c:out value="${goods.giNum}" /></td>

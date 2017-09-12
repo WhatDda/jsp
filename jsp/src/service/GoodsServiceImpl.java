@@ -24,8 +24,24 @@ public class GoodsServiceImpl implements GoodsService {
 			String sql = "SELECT gi.ginum, gi.giname, gi.gidesc, gi.vinum, gi.gicredat,"
 					+ " gi.gimofdat, gi.gicreusr, u.name, gi.gimofusr, c.name as name2"
 					+ " FROM goods_info gi, user u, user c"
-					+ " where gi.gicreusr = u.user_no and gi.gimofusr = c.user_no;";
+					+ " where gi.gicreusr = u.user_no and gi.gimofusr = c.user_no";
+			if(gi!=null) {
+				if(gi.getViNum()!=0) {
+					sql += " and gi.vinum=?";
+				}
+				if(gi.getGiName()!=null) {
+					sql += " and gi.giname like concat('%',?,'%')";
+				}
+			}
 			PreparedStatement ps = con.prepareStatement(sql);
+			if(gi!=null) {
+				if(gi.getViNum()!=0) {
+					ps.setInt(1, gi.getViNum());
+				}
+				if(gi.getGiName()!=null) {
+					ps.setString(2, gi.getGiName());
+				}
+			}
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				GoodsInfo rGi = new GoodsInfo();
