@@ -77,10 +77,9 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Override
 	public int insertGoods(GoodsInfo gi) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public int updateGoods(GoodsInfo gi) {
 		// TODO Auto-generated method stub
@@ -111,5 +110,7 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		return boardList;
 	}
+
+
 
 }

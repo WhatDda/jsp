@@ -93,7 +93,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<input type="button" id="btnHome" value="홈으로">
+	<div class="container">
 	<table id="table" data-height="460" class="table table-bordered table-hover">
 		<thead>
 			<tr>
@@ -108,5 +108,6 @@ $(document).ready(function(){
 	</table>
 	이름 : <input type="text" name="name" id="name">
 	<input type="button" value="검색" data-url="search.user">
+	</div>
 </body>
 </html>

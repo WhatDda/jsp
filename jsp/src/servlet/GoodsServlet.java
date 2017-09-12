@@ -81,6 +81,8 @@ public class GoodsServlet extends HttpServlet {
 			List<VendorInfo> vlist = gs.selectVendorList(null);
 			String result = g.toJson(vlist);
 			doProcess(response,result);
+		} else if("insert".equals(command)) {
+			String param = request.getParameter(arg0);
 		}
 	}
 

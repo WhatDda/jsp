@@ -5,33 +5,12 @@
 </head>
 <script>
 function callback(result){
-//	alert(result.list);
 	var boardList = result.list;
-	var str = "<table border='1'>";
-	str += "<tr>";
-	str += "<td>번호</td>";
-	str += "<td>제목</td>";
-	str += "<td>내용</td>";
-	str += "<td>게시일자</td>";
-	str += "<td>게시자</td>";
-	str += "<td>수정</td>";
-	str += "<td>삭제</td>";
-	str += "</tr>";
-	for(var i =0, max=boardList.length;i<max;i++){
-		var board = boardList[i];
-		str += "<tr>";
-		str += "<td>" + board.b_num + "</td>";
-		str += "<td>" + board.title + "</td>";
-		str += "<td>" + board.content + "</td>";
-		str += "<td>" + board.reg_date + "</td>";
-		str += "<td>" + board.name + "</td>";
-		str += "<td><input type='button' value='수정' data-num='" + board.b_num +"'></td>";
-		str += "<td><input type='button' value='삭제' data-num='" + board.b_num +"'></td>";
-		
-		str += "</tr>";
-	}
-	str += "</table>";
-	$("#result_div").html(str);
+	
+	$("#table").bootstrapTable('destroy');
+	$("#table").bootstrapTable({
+		data : boardList
+	});
 	
 	$("input[type='button']").click(function(){
 		var b_num = this.getAttribute("data-num");
@@ -75,7 +54,23 @@ $(document).ready(function(){
 })
 </script>
 <body>
-<div id="result_div"></div>
+<div class="container">
+	<table id="table" data-height="460" class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th data-field="b_num" class="text-centor">번호</th>
+				<th data-field="title" class="text-centor">제목</th>
+				<th data-field="content" class="text-centor">내용</th>
+				<th data-field="reg_date" class="text-centor">작성일자</th>
+				<th data-field="name" class="text-centor">작성자</th>
+			</tr>
+		</thead>
+		<tbody id="result_tbody">
+		</tbody>
+	</table>
+	이름 : <input type="text" name="name" id="name">
+	<input type="button" value="검색" data-url="search.user">
+	</div>
 <input type="button" id="btnWrite" value="게시물작성">
 </body>
 </html>
