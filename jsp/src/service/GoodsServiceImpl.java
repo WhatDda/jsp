@@ -76,8 +76,37 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public int insertGoods(GoodsInfo gi) {
-		return 0;
+	public int insertGoods(Map<String, String> map) {
+		Connection con = null;
+		DBcon db = null;
+		try {
+			db = new DBcon();
+			con = db.getCon();
+			String sql = "insert into goods_info(giname, gidesc, vinum,";
+			sql += " gicredat, gimofdat, gicreusr, gimofusr)";
+			sql += " values(?,?,?,now(),now(),?,?)";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, map.get("giName"));
+			ps.setString(2, map.get("giDesc"));
+			ps.setString(3, map.get("viNum"));
+			ps.setString(4, map.get("userNo"));
+			ps.setString(5, map.get("userNo"));
+			int rCnt = ps.executeUpdate();
+			con.commit();
+			return rCnt;
+		} catch (Exception e) {
+			try {
+				con.rollback();
+			} catch(Exception e1) {
+			e.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			if(db!=null) {
+				db.closeCon();
+			}	
+		}
+			return 0;
 	}
 	
 	@Override

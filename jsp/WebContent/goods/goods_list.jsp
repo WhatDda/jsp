@@ -69,7 +69,7 @@
                             </tr>
                             <tr>
                                 <td >상품설명</td>
-                                <td ><input type="text" name="giDesc" id="giName"/></td>
+                                <td ><input type="text" name="giDesc" id="giDesc"/></td>
                             </tr>
                             <tr>
                                 <td >회사</td>
@@ -84,7 +84,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                    	<button type="button" class="btn btn-default btn-primary" data-dismiss="modal">Save</button>
+                    	<button type="button" class="btn btn-default btn-primary" id="btnSave">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -100,9 +100,9 @@ $(function () {
     });
     $("#btnSave").click(function(){
     	var param = {};
-    	param["giName"] = $("giName2").val();
-    	param["giDesc"] = $("giDesc").val();
-    	param["viNum"] = "" + $("viNum").val();
+    	param["giName"] = $("#giName2").val();
+    	param["giDesc"] = $("#giDesc").val();
+    	param["viNum"] = "" + $("#viNum").val();
     	param = "?command=insert&param=" + JSON.stringify(param);
     	param = encodeURI(param);
     	var au = new AjaxUtil(param, "insert.goods");
