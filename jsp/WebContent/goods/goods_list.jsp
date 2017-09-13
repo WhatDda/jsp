@@ -85,12 +85,14 @@
                     </div>
                     <div class="modal-footer">
                     	<button type="button" class="btn btn-default btn-primary" id="btnSave">Save</button>
+                    	<button type="button" class="btn btn-default btn-primary" stype="display:none" id="btnDel">Delete</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 	</div>
+	<input type="hidden" id="giNum" />
 </body>
 <script>
 var $table = $('#table1');
@@ -98,16 +100,36 @@ $(function () {
     $('#modalTable').on('shown.bs.modal', function () {
         $table.bootstrapTable('resetView');
     });
-    $("#btnSave").click(function(){
+    
+    $("#btnDel").click(function(){
     	var param = {};
     	param["giNum"] = $("#giNum").val();
+    	param = "?command=delete&param=" + JSON.stringify(param);
+    	param = encodeURI(param);
+	   	var au = new AjaxUtil(param, "insert.goods");
+	   	au.changeCallBack(callback);
+	   	au.send();
+    });
+    
+    $("#btnSave").click(function(){
+    	var param = {};
+    	param["giName"] = $("#giName2").val();
     	param["giDesc"] = $("#giDesc").val();
     	param["viNum"] = "" + $("#viNum").val();
-    	param = "?command=insert&param=" + JSON.stringify(param);
-    	param = encodeURI(param);
-    	var au = new AjaxUtil(param, "insert.goods");
-    	au.changeCallBack(callback);
-    	au.send();
+    	if(this.innerHTML=="SAVE") {
+		   	param = "?command=insert&param=" + JSON.stringify(param);
+		   	param = encodeURI(param);
+		   	var au = new AjaxUtil(param, "insert.goods");
+		   	au.changeCallBack(callback);
+		   	au.send();
+    	} else {
+    		param["giNum"] = "" + $("#giNum").val();
+    		param = "?command=update&param=" + JSON.stringify(param);
+        	param = encodeURI(param);
+        	var au = new AjaxUtil(param, "insert.goods");
+        	au.changeCallBack(callback);
+        	au.send();
+    	}
     })
     $("[data-ginum]").click(function(){
     	var giNum = this.getAttribute("data-ginum");
@@ -122,7 +144,13 @@ $(function () {
 });
 
 function callbackView(result){
-	alert(result.giNum);
+	$("[data-target]").click();
+	$("#giName2").val(result.giName);
+	$("#giDesc").val(result.giDesc);
+	$("#viNum").val(result.viNum);
+	$("#giNum").val(result.giNum);
+	$("#btnSave").html("UPDATE");
+	$("#btnDel").attr("style", "");
 }
 
 function callback(result){

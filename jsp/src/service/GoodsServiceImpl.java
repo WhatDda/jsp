@@ -106,8 +106,31 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Override
 	public int deleteGoods(GoodsInfo gi) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection con = null;
+		DBcon db = null;
+		try {
+			db = new DBcon();
+			con = db.getCon();
+			String sql = "delete from goods_info";
+			sql += " where giNum=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, gi.getGiNum());
+			int rCnt = ps.executeUpdate();
+			con.commit();
+			return rCnt;
+		} catch (Exception e) {
+			try {
+				con.rollback();
+			} catch(Exception e1) {
+			e.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			if(db!=null) {
+				db.closeCon();
+			}	
+		}
+			return 0;
 	}
 
 	@Override
@@ -146,8 +169,35 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	@Override
 	public int updateGoods(GoodsInfo gi) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection con = null;
+		DBcon db = null;
+		try {
+			db = new DBcon();
+			con = db.getCon();
+			String sql = "update goods_info set giName=?, gidesc=?, viNum=?,";
+			sql += " giMofDat=now()";
+			sql += " where giNum=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, gi.getGiName());
+			ps.setString(2, gi.getGiDesc());
+			ps.setInt(3, gi.getViNum());
+			ps.setInt(4, gi.getGiNum());
+			int rCnt = ps.executeUpdate();
+			con.commit();
+			return rCnt;
+		} catch (Exception e) {
+			try {
+				con.rollback();
+			} catch(Exception e1) {
+			e.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			if(db!=null) {
+				db.closeCon();
+			}	
+		}
+			return 0;
 	}
 
 	@Override
