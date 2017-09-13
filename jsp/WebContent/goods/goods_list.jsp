@@ -26,7 +26,7 @@
 		</tr>
 		</thead>
 		<c:forEach items="${goodslist}" var="goods">
-			<tr>
+			<tr data-ginum="${goods.giNum }">
 				<td><c:out value="${goods.giNum}" /></td>
 				<td><c:out value="${goods.giName}" /></td>
 				<td><c:out value="${goods.giDesc}" /></td>
@@ -100,14 +100,39 @@ $(function () {
     });
     $("#btnSave").click(function(){
     	var param = {};
-    	param["giName"] = $("#giName2").val();
+    	param["giNum"] = $("#giNum").val();
     	param["giDesc"] = $("#giDesc").val();
     	param["viNum"] = "" + $("#viNum").val();
     	param = "?command=insert&param=" + JSON.stringify(param);
     	param = encodeURI(param);
     	var au = new AjaxUtil(param, "insert.goods");
+    	au.changeCallBack(callback);
+    	au.send();
+    })
+    $("[data-ginum]").click(function(){
+    	var giNum = this.getAttribute("data-ginum");
+    	var param = {};
+    	param["giNum"] = giNum;
+    	param = "?command=view&param=" + JSON.stringify(param);
+    	param = encodeURI(param);
+    	var au = new AjaxUtil(param, "view.goods");
+    	au.changeCallBack(callbackView);
     	au.send();
     })
 });
+
+function callbackView(result){
+	alert(result.giNum);
+}
+
+function callback(result){
+	alert(result.msg);
+	if(result.insert){
+		if(result.insert=="ok"){
+			location.reload();
+			
+		}
+	}
+}
 </script>
 </html>

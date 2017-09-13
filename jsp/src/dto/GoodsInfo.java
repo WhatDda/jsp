@@ -74,5 +74,12 @@ public class GoodsInfo {
 		this.giMofusr = giMofusr;
 	}
 	
+	@Override
+	public String toString() {
+		return "GoodsInfo [giNum=" + giNum + ", giName=" + giName + ", giDesc=" + giDesc + ", viNum=" + viNum
+				+ ", giCreDat=" + giCreDat + ", giMofDat=" + giMofDat + ", giCreusr=" + giCreusr + ", giMofusr="
+				+ giMofusr + ", name=" + name + ", name2=" + name2 + "]";
+	}
+	
 	
 }

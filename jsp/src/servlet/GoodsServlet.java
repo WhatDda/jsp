@@ -99,6 +99,13 @@ public class GoodsServlet extends HttpServlet {
 			String result = g.toJson(rHm);
 			doProcess(response, result);
 					
+		} else if("view".equals(command)) {
+			String param = request.getParameter("param");
+			GoodsInfo gi = g.fromJson(param,  GoodsInfo.class);
+			//System.out.println(gi);
+			gi = gs.selectGoods(gi);
+			String result = g.toJson(gi);
+			doProcess(response, result);
 		}
 	}
 
